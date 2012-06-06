@@ -4,6 +4,10 @@ class Subscriber
     subscribe(channel, &block)
   end
 
+  def self.model_has_attributes(attr_hash, model )
+    attr_hash.keys.all? { |key| model.accessible_attributes.include?(key) }
+  end
+
   private
 
   def subscribe(channel, &block)

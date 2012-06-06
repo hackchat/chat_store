@@ -1,30 +1,36 @@
 
 Thread.new do
-  update_subscriber = Subscriber.new('update') do |parsed_json, type|
+  Subscriber.new('create') do |parsed_json, type|
+    attr_hash = parsed_json[type]
     model = type.capitalize.constantize
-    if instance = model.find(parsed_json[type])
-      parsed_json[type].delete('id')
-      instance.update_attributes parsed_json[type]
+    if Subscriber.model_has_attributes(attr_hash, model)
+      model.create(attr_hash)
     end
   end
 end
 
 Thread.new do
-  create_subscriber = Subscriber.new('create') do |parsed_json, type|
-    model = type.capitalize.constantize
-    if parsed_json[type].keys.all? { |key| model.accessible_attributes.include?(key) }
-      model.create(parsed_json[type])
-    end
-  end
-end
-
-Thread.new do
-  destroy_subscriber = Subscriber.new('destroy') do |parsed_json, type|
+  Subscriber.new('destroy') do |parsed_json, type|
     if type
+      attr_hash = parsed_json[type]
       model = type.capitalize.constantize
-      if instance = model.where(parsed_json[type]).first
+      token = attr_hash['token']
+      if instance = model.where(token: token).first
         instance.destroy
       end
+    end
+  end
+end
+
+Thread.new do
+  Subscriber.new('update') do |parsed_json, type|
+    attr_hash = parsed_json[type]
+    model = type.capitalize.constantize
+    token = attr_hash['token']
+    if instance = model.where(token: token).first &&
+      Subscriber.model_has_attributes(attr_hash, model)
+      attr_hash.delete['token'] #can't update token
+      instance.update_attributes attr_hash
     end
   end
 end
