@@ -1,22 +1,23 @@
 class RoomsController < ApplicationController
-  before_filter :find_room
 
-  def create
-    Room.create(params[:room])
+  # def create
+  #   Room.create(params[:room])
+  # end
+
+  # def update
+  #   @room.update_attributes params[:room]
+  # end
+
+  # def destroy
+  #   @room.destroy
+  # end
+
+  def index
+    @rooms = Room.all
   end
 
-  def update
-    @room.update_attributes params[:room]
-  end
-
-  def destroy
-    @room.destroy
+  def show
+    @room = Room.includes(:messages).find(params[:id])
   end
 
 end
-
-private
-
-  def find_room
-    @room = Room.find_by_id params[:room][:id]
-  end

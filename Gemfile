@@ -4,7 +4,7 @@ gem 'rails', '3.2.5'
 
 gem 'redis'
 gem 'resque'
-gem 'sqlite3'
+gem 'mysql2'
 
 
 # Gems used only for assets and not required

@@ -1,4 +1,5 @@
 class Subscriber
+
   def initialize(channel, port=6379, &block)
     @redis = Redis.new(port: port, timeout: 0)
     subscribe(channel, &block)
