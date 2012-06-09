@@ -1,7 +1,7 @@
 class Subscriber
-
+  REDIS_URI = URI.parse(REDIS_URL)
+  REDIS = Redis.new(host: REDIS_URI.host, port: REDIS_URI.port, password: REDIS_URI.password)
   def initialize(channel, port=6379, &block)
-    @redis = Redis.new(port: port, timeout: 0)
     subscribe(channel, &block)
   end
 
