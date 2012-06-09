@@ -20,6 +20,7 @@ Thread.new do
       end
     end
   end
+end
 
 Thread.new do
   Subscriber.new('update') do |parsed_json, type|
