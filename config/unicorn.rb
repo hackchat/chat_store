@@ -1,4 +1,4 @@
-root = "/home/deployer/apps/chat_store/current/public"
+root = "/home/deployer/apps/chat_store/current"
 working_directory root
 pid "#{root}/tmp/pids/unicorn.pid"
 stderr_path "#{root}/log/unicorn.log"
